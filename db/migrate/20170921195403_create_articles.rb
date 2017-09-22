@@ -4,6 +4,7 @@ class CreateArticles < ActiveRecord::Migration[5.1]
     	t.string :title
     	t.string :summary
    		t.integer :category_id
+      t.integer :source_id
     	t.text :content
     	t.string :article_url
     	t.string :image_url

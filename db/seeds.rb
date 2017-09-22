@@ -17,11 +17,12 @@ sources = source_JSON["sources"]
 
 
 sources.each do |source|
+	new_source = Source.find_or_create_by(publication: source["name"])
 	category = Category.find_or_create_by(name: source["category"])
 	source_articles = JSON.parse(HTTParty.get("https://newsapi.org/v1/articles?source=" + source["id"] + "&apiKey=" + API_KEY, format: :plain))["articles"]
 	source_articles.each do |article|
 		
-		new_article = Article.create(title: article["title"], summary: article["description"], article_url: article["url"], category_id: category.id, image_url: article["urlToImage"], date: article["publishedAt"] )
+		new_article = Article.create(title: article["title"], summary: article["description"], article_url: article["url"], category_id: category.id, source_id: new_source.id, image_url: article["urlToImage"], date: article["publishedAt"] )
 		if article["author"]
 			article["author"].split(", ").each do |author_name|
 				new_author = Author.find_or_create_by(name: author_name)
